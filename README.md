@@ -18,7 +18,8 @@ A personal "getting started" repo for [Kiro CLI](https://kiro.dev) features — 
 ├── prompts/
 │   └── commit.md                        # /commit slash command
 └── settings/
-    └── mcp.json                          # Linear MCP server
+    ├── mcp.json                          # Linear MCP server
+    └── lsp.json                          # code intelligence / LSP servers
 ```
 
 ### Hooks
@@ -36,6 +37,10 @@ See `.kiro/hooks/*.json` for the hook configs and `.kiro/hooks/scripts/*.sh` for
 MCP (Model Context Protocol) servers add extra tools the agent can call. Configured in `.kiro/settings/mcp.json` (workspace-scoped).
 
 - **Linear** — Connects to Linear's official remote MCP server (`https://mcp.linear.app/mcp`) for reading/writing issues, projects, and teams. Uses OAuth (handled natively by Kiro — no local proxy needed); on first use, Kiro will prompt you to authorize in a browser.
+
+### Code intelligence / LSP
+
+`.kiro/settings/lsp.json` configures optional language servers for enhanced code intelligence (find references, go to definition, rename, diagnostics, hover) on top of the built-in tree-sitter support. Pre-configured here: TypeScript/JavaScript (`typescript-language-server`), Python (`pyright`), Kotlin (`kotlin-language-server`), Swift (`sourcekit-lsp`), and Smithy (`smithy-language-server`). Each language server needs to be installed separately and available on `PATH`; run `/code init` to detect installed servers and start them (`/code status` / `/code logs` to check on them afterward).
 
 ### Prompts / slash commands
 
