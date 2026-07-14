@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MCP servers — kiro-starter</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <nav>
+      <a class="brand" href="index.html">kiro-starter</a>
+      <div class="links">
+        <a href="index.html">Overview</a>
+        <a href="agents.html">Agents</a>
+        <a href="hooks.html">Hooks</a>
+        <a href="mcp.html" aria-current="page">MCP servers</a>
+        <a href="lsp.html">Code intelligence</a>
+        <a href="prompts.html">Prompts</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <span class="badge">MCP</span>
+    <h1>MCP servers</h1>
+    <p class="lede">
+      MCP (Model Context Protocol) servers add extra tools the agent can
+      call. Configured in <code>.kiro/settings/mcp.json</code>
+      (workspace-scoped).
+    </p>
+
+    <h2>Linear</h2>
+    <p>
+      Connects to Linear's official remote MCP server
+      (<code>https://mcp.linear.app/mcp</code>) for reading/writing issues,
+      projects, and teams. Uses OAuth (handled natively by Kiro — no local
+      proxy needed); on first use, Kiro will prompt you to authorize in a
+      browser.
+    </p>
+    <pre><code>{
+  "mcpServers": {
+    "linear": {
+      "url": "https://mcp.linear.app/mcp",
+      "oauthScopes": ["read", "write"]
+    }
+  }
+}</code></pre>
+    <p>
+      The <code>work-finder</code> agent (see
+      <a href="agents.html">Agents</a>) depends on this server to pull
+      tickets from the Linear backlog and read/write issue details and
+      comments.
+    </p>
+    <p>Config: <code>.kiro/settings/mcp.json</code></p>
+  </main>
+
+  <footer>
+    Documentation for the
+    <a href="https://github.com/ryancormack/kiro-starter" target="_blank" rel="noopener">kiro-starter</a>
+    repo.
+  </footer>
+</body>
+</html>

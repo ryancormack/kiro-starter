@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kiro-starter</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <nav>
+      <a class="brand" href="index.html">kiro-starter</a>
+      <div class="links">
+        <a href="index.html" aria-current="page">Overview</a>
+        <a href="agents.html">Agents</a>
+        <a href="hooks.html">Hooks</a>
+        <a href="mcp.html">MCP servers</a>
+        <a href="lsp.html">Code intelligence</a>
+        <a href="prompts.html">Prompts</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <h1>kiro-starter</h1>
+    <p class="lede">
+      A personal "getting started" repo for
+      <a href="https://kiro.dev" target="_blank" rel="noopener">Kiro CLI</a>
+      features — hooks, MCP servers, prompts/slash commands, custom agents,
+      and code intelligence — kept as a baseline to copy into any new
+      project, or to point Kiro at directly to try things out.
+    </p>
+
+    <h2>What's in here</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3><a href="agents.html">Custom agents</a></h3>
+        <p>work-finder, adr-writer, and gpt-review — scoped agent configs with their own tool trust boundaries.</p>
+      </div>
+      <div class="card">
+        <h3><a href="hooks.html">Hooks</a></h3>
+        <p>PreToolUse shell hooks that guard npm installs and enforce Conventional Commits, failing open by design.</p>
+      </div>
+      <div class="card">
+        <h3><a href="mcp.html">MCP servers</a></h3>
+        <p>Linear's remote MCP server, wired in for issue/project/team access via OAuth.</p>
+      </div>
+      <div class="card">
+        <h3><a href="lsp.html">Code intelligence</a></h3>
+        <p>Optional language servers for TypeScript, Python, Kotlin, Swift, and Smithy on top of built-in tree-sitter support.</p>
+      </div>
+      <div class="card">
+        <h3><a href="prompts.html">Prompts / slash commands</a></h3>
+        <p>The <code>/commit</code> command: reviews changes, splits them logically, and writes Conventional Commit messages.</p>
+      </div>
+    </div>
+
+    <h2>Repo layout</h2>
+    <pre><code>.kiro/
+├── agents/
+│   ├── work-finder.json / .md
+│   ├── adr-writer.json / .md
+│   └── gpt-review.json / .md
+├── hooks/
+│   ├── npm-latest-version.json
+│   ├── conventional-commit-guard.json
+│   └── scripts/*.sh
+├── prompts/
+│   └── commit.md
+└── settings/
+    ├── mcp.json
+    └── lsp.json</code></pre>
+
+    <h2>Using this repo</h2>
+    <p>
+      Drop this repo's <code>.kiro/</code> contents into another project
+      (or symlink/copy individual pieces), or start
+      <code>kiro-cli chat</code> from within this repo to try things out
+      directly. See each section above for details on what's configured
+      and why.
+    </p>
+  </main>
+
+  <footer>
+    Documentation for the
+    <a href="https://github.com/ryancormack/kiro-starter" target="_blank" rel="noopener">kiro-starter</a>
+    repo. Generated content reflects the <code>.kiro/</code> configuration files directly.
+  </footer>
+</body>
+</html>
