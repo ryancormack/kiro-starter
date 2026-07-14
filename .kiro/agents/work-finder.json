@@ -1,0 +1,47 @@
+{
+  "name": "work-finder",
+  "description": "Finds the next ticket to work on from the Linear backlog, confirms it with you, verifies you're in the right repo, gathers context, plans the change, then implements it on a branch named with the Linear ticket number, committing and opening a PR that reference the ticket.",
+  "prompt": "file://work-finder.md",
+  "tools": [
+    "read",
+    "write",
+    "shell",
+    "grep",
+    "glob",
+    "code",
+    "todo_list",
+    "@linear"
+  ],
+  "allowedTools": [
+    "read",
+    "grep",
+    "glob",
+    "code",
+    "todo_list",
+    "@linear"
+  ],
+  "toolsSettings": {
+    "write": {
+      "allowedPaths": ["./**"],
+      "deniedPaths": ["./.env", "./.env.*", "./**/secrets/**", "./**/*.pem", "./**/*.key"]
+    },
+    "shell": {
+      "allowedCommands": [
+        "git status",
+        "git branch",
+        "git branch --show-current",
+        "git log",
+        "git diff",
+        "git checkout -b .*",
+        "git add .*",
+        "git commit -m .*",
+        "git push -u origin .*",
+        "gh pr create.*",
+        "gh pr view.*",
+        "gh repo view.*"
+      ],
+      "autoAllowReadonly": true
+    }
+  },
+  "welcomeMessage": "I'll pull the next ticket from the Linear backlog, confirm it with you, and help plan and implement it. Say 'go' or ask me to check the backlog to start."
+}
