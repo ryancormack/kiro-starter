@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hooks — kiro-starter</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <nav>
+      <a class="brand" href="index.html">kiro-starter</a>
+      <div class="links">
+        <a href="index.html">Overview</a>
+        <a href="agents.html">Agents</a>
+        <a href="hooks.html" aria-current="page">Hooks</a>
+        <a href="mcp.html">MCP servers</a>
+        <a href="lsp.html">Code intelligence</a>
+        <a href="prompts.html">Prompts</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <span class="badge">Hooks</span>
+    <h1>Hooks</h1>
+    <p class="lede">
+      Hooks run shell scripts at specific points in the agent's lifecycle
+      (e.g. before a tool call) and can block the call by exiting non-zero.
+      Both hooks configured here are <code>PreToolUse</code> hooks that fire
+      on every <code>execute_bash</code>/shell call, cheaply bail out if the
+      command doesn't match what they care about, and <strong>fail open</strong>
+      (exit 0) on anything ambiguous — jq missing, unparseable input, etc. —
+      so they can never wedge the agent.
+    </p>
+
+    <h2>npm-latest-version</h2>
+    <p>
+      Intercepts <code>npm install</code>/<code>i</code>/<code>add</code>
+      commands. If any package is unpinned (no exact version, or a floating
+      tag/range), it looks up the latest published version with
+      <code>npm view</code> and blocks the install (exit 2), prompting the
+      agent to re-run with exact version pins. Supports a warn-only mode via
+      <code>NPM_LATEST_HOOK_MODE=warn</code>.
+    </p>
+    <pre><code>{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "npm latest version guard",
+      "trigger": "PreToolUse",
+      "matcher": "execute_bash",
+      "action": {
+        "type": "command",
+        "command": "bash .kiro/hooks/scripts/npm-latest-version.sh",
+        "timeout": 30
+      },
+      "enabled": true
+    }
+  ]
+}</code></pre>
+    <p>Config: <code>.kiro/hooks/npm-latest-version.json</code> · Script: <code>.kiro/hooks/scripts/npm-latest-version.sh</code></p>
+
+    <h2>conventional-commit-guard</h2>
+    <p>
+      Intercepts <code>git commit</code> commands that carry an inline
+      <code>-m</code>/<code>--message</code>. Validates the message against
+      <a href="https://www.conventionalcommits.org/" target="_blank" rel="noopener">Conventional Commits</a>
+      format (<code>type(scope)?: description</code>, with allowed types
+      <code>feat</code>, <code>fix</code>, <code>docs</code>, <code>style</code>,
+      <code>refactor</code>, <code>perf</code>, <code>test</code>,
+      <code>build</code>, <code>ci</code>, <code>chore</code>,
+      <code>revert</code>) and blocks the commit with guidance if it doesn't
+      conform.
+    </p>
+    <p>
+      Commits without an inline message (i.e. ones that open
+      <code>$EDITOR</code>) pass through untouched, since there's nothing to
+      inspect yet. Command parsing is quote-aware but expansion-free
+      (tokenized via <code>xargs</code>, not <code>eval</code>), so it can't
+      be tricked into executing anything embedded in a commit message.
+    </p>
+    <pre><code>{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "conventional commit guard",
+      "trigger": "PreToolUse",
+      "matcher": "execute_bash",
+      "action": {
+        "type": "command",
+        "command": "bash .kiro/hooks/scripts/conventional-commit-guard.sh",
+        "timeout": 30
+      },
+      "enabled": true
+    }
+  ]
+}</code></pre>
+    <p>Config: <code>.kiro/hooks/conventional-commit-guard.json</code> · Script: <code>.kiro/hooks/scripts/conventional-commit-guard.sh</code></p>
+  </main>
+
+  <footer>
+    Documentation for the
+    <a href="https://github.com/ryancormack/kiro-starter" target="_blank" rel="noopener">kiro-starter</a>
+    repo.
+  </footer>
+</body>
+</html>

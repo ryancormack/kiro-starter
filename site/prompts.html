@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prompts — kiro-starter</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <nav>
+      <a class="brand" href="index.html">kiro-starter</a>
+      <div class="links">
+        <a href="index.html">Overview</a>
+        <a href="agents.html">Agents</a>
+        <a href="hooks.html">Hooks</a>
+        <a href="mcp.html">MCP servers</a>
+        <a href="lsp.html">Code intelligence</a>
+        <a href="prompts.html" aria-current="page">Prompts</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <span class="badge">Prompts</span>
+    <h1>Prompts / slash commands</h1>
+    <p class="lede">
+      Local prompt files in <code>.kiro/prompts/*.md</code> become slash
+      commands (filename minus <code>.md</code> = command name), invokable
+      as <code>/&lt;name&gt;</code> or via <code>/prompts</code>.
+    </p>
+
+    <h2>/commit</h2>
+    <p>
+      Prepares and creates git commit(s) for the current working directory
+      changes, following a precise, repeatable workflow:
+    </p>
+    <ol>
+      <li><strong>Branch check.</strong> Refuses to commit directly on <code>main</code>/<code>master</code>; offers to create a new branch instead.</li>
+      <li><strong>Inspect.</strong> Runs <code>git status</code> and <code>git diff</code> (and <code>--staged</code> if relevant), reading changed files rather than guessing from the diff alone.</li>
+      <li><strong>Group logically.</strong> Splits unrelated changes into separate commits, staging each group explicitly (never a blanket <code>git add .</code> when splitting).</li>
+      <li><strong>Write Conventional Commit messages</strong> for each group — <code>type(scope)?: description</code>, imperative and lowercase after the colon, with a body for extra context and a <code>!</code> suffix for breaking changes.</li>
+      <li><strong>Commit each group.</strong> Message format is validated automatically by the <code>conventional-commit-guard</code> hook (see <a href="hooks.html">Hooks</a>) — non-conforming messages get rejected and retried.</li>
+      <li><strong>Confirm.</strong> Shows <code>git log --oneline</code> and <code>git status</code> after committing. Does not push.</li>
+    </ol>
+    <p>
+      If there are no changes in the working directory, it says so and
+      stops rather than committing nothing.
+    </p>
+    <p>Source: <code>.kiro/prompts/commit.md</code></p>
+  </main>
+
+  <footer>
+    Documentation for the
+    <a href="https://github.com/ryancormack/kiro-starter" target="_blank" rel="noopener">kiro-starter</a>
+    repo.
+  </footer>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Code intelligence — kiro-starter</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <nav>
+      <a class="brand" href="index.html">kiro-starter</a>
+      <div class="links">
+        <a href="index.html">Overview</a>
+        <a href="agents.html">Agents</a>
+        <a href="hooks.html">Hooks</a>
+        <a href="mcp.html">MCP servers</a>
+        <a href="lsp.html" aria-current="page">Code intelligence</a>
+        <a href="prompts.html">Prompts</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <span class="badge">LSP</span>
+    <h1>Code intelligence / LSP</h1>
+    <p class="lede">
+      <code>.kiro/settings/lsp.json</code> configures optional language
+      servers for enhanced code intelligence (find references, go to
+      definition, rename, diagnostics, hover) on top of the built-in
+      tree-sitter support. Each language server needs to be installed
+      separately and available on <code>PATH</code>.
+    </p>
+
+    <h2>Configured languages</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>TypeScript / JavaScript</h3>
+        <p><code>typescript-language-server</code> · <code>.ts</code>, <code>.js</code>, <code>.tsx</code>, <code>.jsx</code></p>
+      </div>
+      <div class="card">
+        <h3>Python</h3>
+        <p><code>pyright</code> (via <code>pyright-langserver</code>) · <code>.py</code></p>
+      </div>
+      <div class="card">
+        <h3>Kotlin</h3>
+        <p><code>kotlin-language-server</code> · <code>.kt</code>, <code>.kts</code></p>
+      </div>
+      <div class="card">
+        <h3>Swift</h3>
+        <p><code>sourcekit-lsp</code> (via <code>xcrun</code>) · <code>.swift</code></p>
+      </div>
+      <div class="card">
+        <h3>Smithy</h3>
+        <p><code>smithy-language-server</code> · <code>.smithy</code></p>
+      </div>
+    </div>
+
+    <p>
+      Each entry also defines <code>project_patterns</code> (files that
+      signal a project root, e.g. <code>package.json</code>,
+      <code>pyproject.toml</code>) and <code>exclude_patterns</code>
+      (directories to skip, e.g. <code>node_modules</code>,
+      <code>__pycache__</code>).
+    </p>
+
+    <h2>Getting started</h2>
+    <p>
+      Install whichever language server(s) you need and ensure they're on
+      <code>PATH</code>, then run <code>/code init</code> to detect and
+      start them. Use <code>/code status</code> or <code>/code logs</code>
+      afterward to check on them.
+    </p>
+
+    <h2>Config excerpt</h2>
+    <pre><code>{
+  "languages": {
+    "typescript": {
+      "name": "typescript-language-server",
+      "command": "typescript-language-server",
+      "args": ["--stdio"],
+      "file_extensions": ["ts", "js", "tsx", "jsx"],
+      "project_patterns": ["package.json", "tsconfig.json"]
+    },
+    "python": {
+      "name": "pyright",
+      "command": "pyright-langserver",
+      "args": ["--stdio"],
+      "file_extensions": ["py"],
+      "project_patterns": ["pyproject.toml", "setup.py", "requirements.txt"]
+    }
+    // ...kotlin, swift, smithy
+  }
+}</code></pre>
+    <p>Config: <code>.kiro/settings/lsp.json</code></p>
+  </main>
+
+  <footer>
+    Documentation for the
+    <a href="https://github.com/ryancormack/kiro-starter" target="_blank" rel="noopener">kiro-starter</a>
+    repo.
+  </footer>
+</body>
+</html>

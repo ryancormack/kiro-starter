@@ -56,6 +56,8 @@ Local prompt files in `.kiro/prompts/*.md` become slash commands (filename minus
 
 Drop this repo's `.kiro/` contents into another project (or symlink/copy individual pieces), or start `kiro-cli chat` from within this repo to try things out directly.
 
+For a more detailed walkthrough of each feature, open [`site/index.html`](./site/index.html) in a browser.
+
 ### Custom agents
 
 - **`work-finder`** — Pulls the next ticket from the Linear backlog (via the Linear MCP server above), confirms with you before starting, verifies the workspace is the right repo for the ticket, asks clarifying questions, gathers codebase context and writes a plan to `./docs/plans/{date}-{name}.md` before implementing it on a branch named with the Linear ticket ID (e.g. `feat/ENG-123-...`). Commits reference the ticket ID (validated by the `conventional-commit-guard` hook), and the PR it opens with `gh pr create` references the ticket in its description. Never merges — stops and hands back the PR URL. Read-only tools (`read`, `grep`, `glob`, `code`, `todo_list`, Linear) are trusted by default; `write` and `shell` are scoped via `toolsSettings` to this workspace and to specific safe git/gh commands, but still prompt for approval since those are the highest-impact actions in the workflow.

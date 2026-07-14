@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agents — kiro-starter</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <nav>
+      <a class="brand" href="index.html">kiro-starter</a>
+      <div class="links">
+        <a href="index.html">Overview</a>
+        <a href="agents.html" aria-current="page">Agents</a>
+        <a href="hooks.html">Hooks</a>
+        <a href="mcp.html">MCP servers</a>
+        <a href="lsp.html">Code intelligence</a>
+        <a href="prompts.html">Prompts</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <span class="badge">Agents</span>
+    <h1>Custom agents</h1>
+    <p class="lede">
+      Custom agents in <code>.kiro/agents/</code> pair a config
+      (<code>*.json</code> — name, tools, trust boundaries) with a system
+      prompt (<code>*.md</code>). Switch to any of them with
+      <code>/agent &lt;name&gt;</code>.
+    </p>
+
+    <h2>work-finder</h2>
+    <p>
+      Pulls the next ticket from the Linear backlog (via the Linear MCP
+      server — see <a href="mcp.html">MCP servers</a>), confirms it with you
+      before starting, verifies the workspace is the right repo for the
+      ticket, asks clarifying questions, gathers codebase context and
+      writes a plan to <code>./docs/plans/{date}-{name}.md</code> before
+      implementing it on a branch named with the Linear ticket ID (e.g.
+      <code>feat/ENG-123-...</code>).
+    </p>
+    <p>
+      Commits reference the ticket ID (validated by the
+      <code>conventional-commit-guard</code> hook), and the PR it opens
+      with <code>gh pr create</code> references the ticket in its
+      description. Never merges — stops and hands back the PR URL.
+    </p>
+    <p>
+      Read-only tools (<code>read</code>, <code>grep</code>,
+      <code>glob</code>, <code>code</code>, <code>todo_list</code>,
+      Linear) are trusted by default; <code>write</code> and
+      <code>shell</code> are scoped via <code>toolsSettings</code> to this
+      workspace and to specific safe git/gh commands, but still prompt for
+      approval since those are the highest-impact actions in the workflow.
+    </p>
+    <pre><code>"toolsSettings": {
+  "write": {
+    "allowedPaths": ["./**"],
+    "deniedPaths": ["./.env", "./.env.*", "./**/secrets/**", "./**/*.pem", "./**/*.key"]
+  },
+  "shell": {
+    "allowedCommands": [
+      "git status", "git branch", "git log", "git diff",
+      "git checkout -b .*", "git add .*", "git commit -m .*",
+      "git push -u origin .*", "gh pr create.*", "gh pr view.*", "gh repo view.*"
+    ],
+    "autoAllowReadonly": true
+  }
+}</code></pre>
+    <p>Config: <code>.kiro/agents/work-finder.json</code> · Prompt: <code>.kiro/agents/work-finder.md</code></p>
+
+    <h2>adr-writer</h2>
+    <p>
+      Writes Architecture Decision Records to
+      <code>./docs/adr/NNNN-title-slug.md</code> (auto-numbered) using a
+      lightweight ADR template: Status / Context / Decision / Consequences
+      / Alternatives Considered. Runs on <code>claude-sonnet-5</code>.
+    </p>
+    <p>
+      Read-only tools (<code>read</code>, <code>grep</code>,
+      <code>glob</code>, <code>code</code>) are trusted for researching
+      context; <code>write</code> is auto-trusted <em>only</em> for
+      <code>./docs/adr/*.md</code> — writes anywhere else still prompt for
+      approval, keeping the agent scoped to its one job. It does not
+      implement code, run commands, or edit any other file.
+    </p>
+    <pre><code>"toolsSettings": {
+  "write": {
+    "allowedPaths": ["./docs/adr/*.md"]
+  }
+}</code></pre>
+    <p>Config: <code>.kiro/agents/adr-writer.json</code> · Prompt: <code>.kiro/agents/adr-writer.md</code></p>
+
+    <h2>gpt-review</h2>
+    <p>
+      A code review agent running on <code>gpt-5.6-sol</code>, useful as a
+      second opinion from a different model family. Fully read-only
+      (<code>read</code>, <code>grep</code>, <code>glob</code>,
+      <code>code</code>, all trusted) — it reviews and reports, it doesn't
+      edit anything.
+    </p>
+    <p>
+      Reviews diffs, files, or whatever you point it at, and is instructed
+      to disagree with prior conclusions when warranted rather than
+      rubber-stamp them — distinguishing blocking issues (bugs, security,
+      broken tests) from non-blocking suggestions (style, minor
+      readability).
+    </p>
+    <p>Config: <code>.kiro/agents/gpt-review.json</code> · Prompt: <code>.kiro/agents/gpt-review.md</code></p>
+  </main>
+
+  <footer>
+    Documentation for the
+    <a href="https://github.com/ryancormack/kiro-starter" target="_blank" rel="noopener">kiro-starter</a>
+    repo.
+  </footer>
+</body>
+</html>
