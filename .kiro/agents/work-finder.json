@@ -20,6 +20,12 @@
     "todo_list",
     "@linear"
   ],
+  "mcpServers": {
+    "linear": {
+      "url": "https://mcp.linear.app/mcp",
+      "oauthScopes": ["read", "write"]
+    }
+  },
   "toolsSettings": {
     "write": {
       "allowedPaths": ["./**"],
