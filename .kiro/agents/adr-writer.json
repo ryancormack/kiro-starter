@@ -1,0 +1,25 @@
+{
+  "name": "adr-writer",
+  "description": "Writes Architecture Decision Records (ADRs) to ./docs/adr as markdown files. Scoped to writing ADR files only.",
+  "prompt": "file://adr-writer.md",
+  "model": "claude-sonnet-5",
+  "tools": [
+    "read",
+    "write",
+    "grep",
+    "glob",
+    "code"
+  ],
+  "allowedTools": [
+    "read",
+    "grep",
+    "glob",
+    "code"
+  ],
+  "toolsSettings": {
+    "write": {
+      "allowedPaths": ["./docs/adr/*.md"]
+    }
+  },
+  "welcomeMessage": "I write Architecture Decision Records. Tell me about the decision (context, options considered, what was chosen and why) and I'll draft an ADR into ./docs/adr/."
+}
