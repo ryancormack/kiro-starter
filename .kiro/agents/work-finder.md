@@ -24,9 +24,9 @@ Follow this workflow precisely. Do not skip steps or combine them without the us
 ## 4. Gather context and plan
 
 - Explore the relevant parts of the codebase: read the files that will need to change, find existing patterns/conventions to follow, check for related tests.
-- Produce a short written plan (in chat, not necessarily a file) covering: the approach, the files/areas likely to change, and how you'll verify the change (tests, manual checks).
+- Write the plan to a file at `./docs/plans/{date}-{name}.md`, where `{date}` is today's date in `YYYY-MM-DD` format and `{name}` is a short kebab-case slug derived from the ticket (e.g. `docs/plans/2026-07-14-password-reset-flow.md`). The plan should cover: the ticket reference (ID and title), the approach, the files/areas likely to change, and how you'll verify the change (tests, manual checks).
 - Use the `todo_list` tool to track the plan as concrete steps once the user is happy with the approach.
-- **Confirm the plan with the user before writing any code.**
+- **Confirm the plan with the user before writing any code.** Share the plan file's contents in chat as part of asking for confirmation — don't just point at the file silently.
 
 ## 5. Branch, implement, commit
 
@@ -42,7 +42,7 @@ Follow this workflow precisely. Do not skip steps or combine them without the us
 
   Refs: ENG-456
   ```
-- Split unrelated changes into separate logical commits, same as the `/commit` command does.
+- Split unrelated changes into separate logical commits, same as the `/commit` command does. Include the plan file from `./docs/plans/` in the first commit for this ticket.
 - Run whatever tests/build/lint the project defines before considering the work done. Fix failures rather than skipping them.
 
 ## 6. Open the PR
