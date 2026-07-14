@@ -8,7 +8,11 @@ A personal "getting started" repo for [Kiro CLI](https://kiro.dev) features — 
 .kiro/
 ├── agents/
 │   ├── work-finder.json                 # custom agent config
-│   └── work-finder.md                   # its system prompt
+│   ├── work-finder.md                   # its system prompt
+│   ├── adr-writer.json                  # custom agent config
+│   ├── adr-writer.md                    # its system prompt
+│   ├── gpt-review.json                  # custom agent config
+│   └── gpt-review.md                    # its system prompt
 ├── hooks/
 │   ├── npm-latest-version.json          # PreToolUse hook config
 │   ├── conventional-commit-guard.json   # PreToolUse hook config
@@ -54,6 +58,14 @@ Drop this repo's `.kiro/` contents into another project (or symlink/copy individ
 
 ### Custom agents
 
-- **`work-finder`** — Pulls the next ticket from the Linear backlog (via the Linear MCP server above), confirms with you before starting, verifies the workspace is the right repo for the ticket, asks clarifying questions, gathers codebase context and proposes a plan, then implements it on a branch named with the Linear ticket ID (e.g. `feat/ENG-123-...`). Commits reference the ticket ID (validated by the `conventional-commit-guard` hook), and the PR it opens with `gh pr create` references the ticket in its description. Never merges — stops and hands back the PR URL. Read-only tools (`read`, `grep`, `glob`, `code`, `todo_list`, Linear) are trusted by default; `write` and `shell` are scoped via `toolsSettings` to this workspace and to specific safe git/gh commands, but still prompt for approval since those are the highest-impact actions in the workflow.
+- **`work-finder`** — Pulls the next ticket from the Linear backlog (via the Linear MCP server above), confirms with you before starting, verifies the workspace is the right repo for the ticket, asks clarifying questions, gathers codebase context and writes a plan to `./docs/plans/{date}-{name}.md` before implementing it on a branch named with the Linear ticket ID (e.g. `feat/ENG-123-...`). Commits reference the ticket ID (validated by the `conventional-commit-guard` hook), and the PR it opens with `gh pr create` references the ticket in its description. Never merges — stops and hands back the PR URL. Read-only tools (`read`, `grep`, `glob`, `code`, `todo_list`, Linear) are trusted by default; `write` and `shell` are scoped via `toolsSettings` to this workspace and to specific safe git/gh commands, but still prompt for approval since those are the highest-impact actions in the workflow.
 
   Switch to it with `/agent work-finder`.
+
+- **`adr-writer`** — Writes Architecture Decision Records to `./docs/adr/NNNN-title-slug.md` (auto-numbered, lightweight ADR template: Status/Context/Decision/Consequences/Alternatives). Runs on `claude-sonnet-5`. Read-only tools (`read`, `grep`, `glob`, `code`) are trusted for researching context; `write` is auto-trusted only for `./docs/adr/*.md` — writes anywhere else still prompt for approval, keeping the agent scoped to its one job.
+
+  Switch to it with `/agent adr-writer`.
+
+- **`gpt-review`** — A code review agent running on `gpt-5.6-sol`, useful as a second opinion from a different model family. Fully read-only (`read`, `grep`, `glob`, `code`, all trusted) — it reviews and reports, it doesn't edit anything. Reviews diffs, files, or whatever you point it at, and is instructed to disagree with prior conclusions when warranted rather than rubber-stamp them.
+
+  Switch to it with `/agent gpt-review`.
